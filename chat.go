@@ -45,22 +45,22 @@ type Chat struct {
 	OnMute      func()
 }
 
-type Request struct {
+type request struct {
 	Method string      `json:"method"`
 	Data   interface{} `json:"data"`
 }
 
-type Response struct {
+type response struct {
 	Args     []interface{} `json:"args"`
 	Callback interface{}   `json:"callback"`
 	Method   string        `json:"method"`
 }
 
-type AuthResult int
+type authResult int
 
 const (
-	AuthUnknown AuthResult = 0
-	AuthOK      AuthResult = 1
+	authUnknown authResult = 0
+	authOK      authResult = 1
 )
 
 func NewChat(ctx context.Context, room string, opts ...option.ClientOption) (*Chat, error) {
@@ -215,7 +215,7 @@ func (c *Chat) parse(message []byte) error {
 			return errors.New("no data")
 		}
 
-		var resp Response
+		var resp response
 
 		err = json.Unmarshal([]byte(data[0]), &resp)
 
@@ -227,7 +227,7 @@ func (c *Chat) parse(message []byte) error {
 		case "onAuthResponse":
 			resultStr := resp.Args[0].(string)
 			result, _ := strconv.Atoi(resultStr)
-			return c.onAuthResponse(AuthResult(result))
+			return c.onAuthResponse(authResult(result))
 		case "onNotify":
 			dataStr := resp.Args[0].(string)
 
@@ -269,7 +269,7 @@ func (c *Chat) parse(message []byte) error {
 }
 
 func (c *Chat) send(method string, data interface{}) error {
-	req := Request{
+	req := request{
 		Method: method,
 		Data:   data,
 	}
@@ -309,8 +309,8 @@ func (c *Chat) onConnected() error {
 	return c.send("connect", connectMessage)
 }
 
-func (c *Chat) onAuthResponse(result AuthResult) error {
-	if result == AuthOK {
+func (c *Chat) onAuthResponse(result authResult) error {
+	if result == authOK {
 		joinRoomMessage := joinRoomMessage{
 			Room: c.room,
 		}
