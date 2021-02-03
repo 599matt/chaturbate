@@ -1,3 +1,5 @@
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/sextech/chaturbate)
+
 # Chaturbate
 
 [![GoDoc](https://godoc.org/github.com/sextech/chaturbate?status.svg)](https://godoc.org/github.com/sextech/chaturbate)
